@@ -1,0 +1,20 @@
+{
+  "configs": [
+    {
+      "key": "ConsumerKey",
+      "value": "5VPqHCpUfnlZnJdriTUKmZtJT"
+    },
+    {
+      "key": "ConsumerSecret",
+      "value": "SlkeJh0acOsHPpEF8Wnw6Hnro3bP5JZv1stdgJ1RDgsNdn8RCa"
+    },
+    {
+      "key": "AccessToken",
+      "value": "823370125105446912-9xvYTPSjiSFctLiP3NmYdi2Foh0cN3o"
+    },
+    {
+      "key": "AccessSecret",
+      "value": "aLCGiDSqWwdPeLzZlpk3gaMnEvop5K2yEukYm6EbDp3lt"
+    }
+  ]
+}

@@ -2,31 +2,28 @@ package twitter
 
 import (
 	"fmt"
+	"github.com/dghubble/go-twitter/twitter"
+	"github.com/dghubble/oauth1"
+	"github.com/rohithv1997/SentimentAnalysis-Go/applicationConfig"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
-
-	"github.com/coreos/pkg/flagutil"
-	"github.com/dghubble/go-twitter/twitter"
-	"github.com/dghubble/oauth1"
 )
 
 func ApiEndpoint() {
 
-	consumerKey := flags.String("consumer-key", "", "twitter Consumer Key")
-	consumerSecret := flags.String("consumer-secret", "", "twitter Consumer Secret")
-	accessToken := flags.String("access-token", "", "twitter Access Token")
-	accessSecret := flags.String("access-secret", "", "twitter Access Secret")
-	flags.Parse(os.Args[1:])
-	flagutil.SetFlagsFromEnv(flags, "TWITTER")
+	consumerKey := applicationConfig.Configuration.GetValue(ConsumerKey)
+	consumerSecret := applicationConfig.Configuration.GetValue(ConsumerSecret)
+	accessToken := applicationConfig.Configuration.GetValue(AccessToken)
+	accessSecret := applicationConfig.Configuration.GetValue(AccessSecret)
 
-	if *consumerKey == "" || *consumerSecret == "" || *accessToken == "" || *accessSecret == "" {
+	if consumerKey == "" || consumerSecret == "" || accessToken == "" || accessSecret == "" {
 		log.Fatal("Consumer key/secret and Access token/secret required")
 	}
 
-	config := oauth1.NewConfig(*consumerKey, *consumerSecret)
-	token := oauth1.NewToken(*accessToken, *accessSecret)
+	config := oauth1.NewConfig(consumerKey, consumerSecret)
+	token := oauth1.NewToken(accessToken, accessSecret)
 	// OAuth1 http.Client will automatically authorize Requests
 	httpClient := config.Client(oauth1.NoContext, token)
 
