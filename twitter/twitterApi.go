@@ -11,7 +11,7 @@ import (
 	"syscall"
 )
 
-func ApiEndpoint() {
+func ApiEndpoint(searchTerm ...string) {
 
 	consumerKey := applicationConfig.Configuration.GetValue(ConsumerKey)
 	consumerSecret := applicationConfig.Configuration.GetValue(ConsumerSecret)
@@ -46,33 +46,13 @@ func ApiEndpoint() {
 
 	// FILTER
 	filterParams := &twitter.StreamFilterParams{
-		Track:         []string{"cat"},
+		Track:         searchTerm,
 		StallWarnings: twitter.Bool(true),
 	}
 	stream, err := client.Streams.Filter(filterParams)
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	// USER (quick test: auth'd user likes a tweet -> event)
-	// userParams := &twitter.StreamUserParams{
-	// 	StallWarnings: twitter.Bool(true),
-	// 	With:          "followings",
-	// 	Language:      []string{"en"},
-	// }
-	// stream, err := client.Streams.User(userParams)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-
-	// SAMPLE
-	// sampleParams := &twitter.StreamSampleParams{
-	// 	StallWarnings: twitter.Bool(true),
-	// }
-	// stream, err := client.Streams.Sample(sampleParams)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
 
 	// Receive messages until stopped or stream quits
 	go demux.HandleChan(stream.Messages)
