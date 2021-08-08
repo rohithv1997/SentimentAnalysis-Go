@@ -1,6 +1,7 @@
 package twitter
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/dghubble/go-twitter/twitter"
 	"github.com/dghubble/oauth1"
@@ -13,10 +14,10 @@ import (
 
 func ApiEndpoint(searchTerm ...string) {
 
-	consumerKey := applicationConfig.Configuration.GetValue(ConsumerKey)
-	consumerSecret := applicationConfig.Configuration.GetValue(ConsumerSecret)
-	accessToken := applicationConfig.Configuration.GetValue(AccessToken)
-	accessSecret := applicationConfig.Configuration.GetValue(AccessSecret)
+	consumerKey := applicationConfig.Instance.GetValue(ConsumerKey)
+	consumerSecret := applicationConfig.Instance.GetValue(ConsumerSecret)
+	accessToken := applicationConfig.Instance.GetValue(AccessToken)
+	accessSecret := applicationConfig.Instance.GetValue(AccessSecret)
 
 	if consumerKey == "" || consumerSecret == "" || accessToken == "" || accessSecret == "" {
 		log.Fatal("Consumer key/secret and Access token/secret required")
@@ -33,15 +34,8 @@ func ApiEndpoint(searchTerm ...string) {
 	// Convenience Demux demultiplexed stream messages
 	demux := twitter.NewSwitchDemux()
 	demux.Tweet = func(tweet *twitter.Tweet) {
-		fmt.Println(tweet.Text)
+		//	fmt.Printf("Text: %s\r\n",tweet.Text)
 	}
-	demux.DM = func(dm *twitter.DirectMessage) {
-		fmt.Println(dm.SenderID)
-	}
-	demux.Event = func(event *twitter.Event) {
-		fmt.Printf("%#v\n", event)
-	}
-
 	fmt.Println("Starting Stream...")
 
 	// FILTER
@@ -56,6 +50,20 @@ func ApiEndpoint(searchTerm ...string) {
 
 	// Receive messages until stopped or stream quits
 	go demux.HandleChan(stream.Messages)
+
+	search, _, err := client.Search.Tweets(&twitter.SearchTweetParams{
+		Query: "gopher",
+	})
+
+	//for _, s := range search.Statuses {
+	//	fmt.Println(s.s)
+	//}
+
+	serialised, _ := json.Marshal(search.Statuses[0])
+	fmt.Printf("%s\n\n\n****\n\n\n",serialised)
+
+	serialised, _ = json.Marshal(search.Metadata)
+	fmt.Printf("METADATA: \n\n\n%s\n", serialised)
 
 	// Wait for SIGINT and SIGTERM (HIT CTRL-C)
 	ch := make(chan os.Signal)

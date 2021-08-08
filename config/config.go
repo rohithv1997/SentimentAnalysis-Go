@@ -9,22 +9,19 @@ import (
 	"sync"
 )
 
-type configMap struct {
+type configurationManager struct {
 	keyValuePairs map[string]string
-	rwMutex       sync.RWMutex
 }
 
-var Configuration configMap
+var once sync.Once
 
-func (configMap *configMap) GetValue(key string) string {
-	configMap.rwMutex.RLock()
-	defer configMap.rwMutex.RUnlock()
+var Instance *configurationManager
+
+func (configMap *configurationManager) GetValue(key string) string {
 	return configMap.keyValuePairs[key]
 }
 
-func (configMap *configMap) initialize(key, value string) {
-	configMap.rwMutex.Lock()
-	defer configMap.rwMutex.Unlock()
+func (configMap *configurationManager) setKeyValuePair(key, value string) {
 	configMap.keyValuePairs[key] = value
 }
 
@@ -36,36 +33,40 @@ var configJson = struct {
 }{}
 
 func LoadConfiguration() {
-	var mutex sync.Mutex
-	mutex.Lock()
-	defer mutex.Unlock()
-
-	if len(Configuration.keyValuePairs) != 0 {
-		return
-	}
-	Configuration = configMap{
-		keyValuePairs: make(map[string]string),
-	}
-
-	pwd, _ := os.Getwd()
-	path := filepath.Join(pwd, "config", "config.json")
-
-	jsonFile, err := os.Open(path)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	defer jsonFile.Close()
-
-	byteValue, _ := ioutil.ReadAll(jsonFile)
-
-	err = json.Unmarshal(byteValue, &configJson)
-	if err != nil {
-		fmt.Println(err)
+	if Instance != nil {
 		return
 	}
 
-	for _, config := range configJson.Configs {
-		Configuration.initialize(config.Key, config.Value)
-	}
+	once.Do(func() {
+		Instance = &configurationManager{
+			keyValuePairs: make(map[string]string),
+		}
+
+		pwd, _ := os.Getwd()
+		path := filepath.Join(pwd, "config", "config.json")
+
+		jsonFile, err := os.Open(path)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		defer func(jsonFile *os.File) {
+			err := jsonFile.Close()
+			if err != nil {
+				fmt.Println(err)
+			}
+		}(jsonFile)
+
+		byteValue, _ := ioutil.ReadAll(jsonFile)
+
+		err = json.Unmarshal(byteValue, &configJson)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		for _, config := range configJson.Configs {
+			Instance.setKeyValuePair(config.Key, config.Value)
+		}
+	})
 }
