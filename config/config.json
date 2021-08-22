@@ -15,6 +15,26 @@
     {
       "key": "AccessSecret",
       "value": "aLCGiDSqWwdPeLzZlpk3gaMnEvop5K2yEukYm6EbDp3lt"
+    },
+    {
+      "key": "RabbitMqUrl",
+      "value": "localhost:5672"
+    },
+    {
+      "key": "RabbitMqUsername",
+      "value": "guest"
+    },
+    {
+      "key": "RabbitMqPassword",
+      "value": "guest"
+    },
+    {
+      "key": "RabbitMqPublishQueue",
+      "value": "tweetstream"
+    },
+    {
+      "key": "RabbitMqSubscribeQueue",
+      "value": "corenlpresponse"
     }
   ]
 }
