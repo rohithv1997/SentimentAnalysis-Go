@@ -15,7 +15,7 @@ type configurationManager struct {
 
 var once sync.Once
 
-var Instance *configurationManager
+var instance *configurationManager
 
 func (configMap *configurationManager) GetValue(key string) string {
 	return configMap.keyValuePairs[key]
@@ -32,13 +32,9 @@ var configJson = struct {
 	} `json:"configs"`
 }{}
 
-func LoadConfiguration() {
-	if Instance != nil {
-		return
-	}
-
+func GetInstance() *configurationManager {
 	once.Do(func() {
-		Instance = &configurationManager{
+		instance = &configurationManager{
 			keyValuePairs: make(map[string]string),
 		}
 
@@ -66,7 +62,9 @@ func LoadConfiguration() {
 		}
 
 		for _, config := range configJson.Configs {
-			Instance.setKeyValuePair(config.Key, config.Value)
+			instance.setKeyValuePair(config.Key, config.Value)
 		}
 	})
+
+	return instance
 }

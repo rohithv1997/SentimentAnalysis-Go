@@ -3,26 +3,35 @@ package rabbitmq
 import (
 	"fmt"
 	"github.com/streadway/amqp"
+	"log"
 )
 
-func Publish() {
-	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
+func Publish(message []byte) {
+	url := fmt.Sprintf(urlTemplate,
+		GetRabbitMqConfigInstance().username,
+		GetRabbitMqConfigInstance().password,
+		GetRabbitMqConfigInstance().url)
+	conn, err := amqp.Dial(url)
 	if err != nil {
-		fmt.Println("Failed Initializing Broker Connection")
-		panic(err)
+		log.Fatalln(err)
 	}
 
 	ch, err := conn.Channel()
 	if err != nil {
-		fmt.Println(err)
+		log.Fatalln(err)
 	}
-	defer ch.Close()
+	defer func(ch *amqp.Channel) {
+		err := ch.Close()
+		if err != nil {
+			log.Println(err)
+		}
+	}(ch)
 
 	// with this channel open, we can then start to interact
 	// with the instance and declare Queues that we can publish and
 	// subscribe to
 	q, err := ch.QueueDeclare(
-		"TestQueue",
+		GetRabbitMqConfigInstance().publishQueue,
 		true,
 		false,
 		false,
@@ -35,23 +44,23 @@ func Publish() {
 	fmt.Println(q)
 	// Handle any errors if we were unable to create the queue
 	if err != nil {
-		fmt.Println(err)
+		log.Fatalln(err)
 	}
 
 	// attempt to publish a message to the queue!
 	err = ch.Publish(
+		GetRabbitMqConfigInstance().exchange,
 		"",
-		"TestQueue",
 		false,
 		false,
 		amqp.Publishing{
-			ContentType: "text/plain",
-			Body:        []byte("Hello World"),
+			ContentType: contentType,
+			Body:        message,
 		},
 	)
 
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 	}
-	fmt.Println("Successfully Published Message to Queue")
+	log.Println("Successfully Published Message to Queue")
 }

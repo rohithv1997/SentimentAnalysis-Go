@@ -1,40 +1,44 @@
 {
   "configs": [
     {
-      "key": "ConsumerKey",
+      "key": "Twitter_ConsumerKey",
       "value": "5VPqHCpUfnlZnJdriTUKmZtJT"
     },
     {
-      "key": "ConsumerSecret",
+      "key": "Twitter_ConsumerSecret",
       "value": "SlkeJh0acOsHPpEF8Wnw6Hnro3bP5JZv1stdgJ1RDgsNdn8RCa"
     },
     {
-      "key": "AccessToken",
+      "key": "Twitter_AccessToken",
       "value": "823370125105446912-9xvYTPSjiSFctLiP3NmYdi2Foh0cN3o"
     },
     {
-      "key": "AccessSecret",
+      "key": "Twitter_AccessSecret",
       "value": "aLCGiDSqWwdPeLzZlpk3gaMnEvop5K2yEukYm6EbDp3lt"
     },
     {
-      "key": "RabbitMqUrl",
+      "key": "RabbitMq_Url",
       "value": "localhost:5672"
     },
     {
-      "key": "RabbitMqUsername",
+      "key": "RabbitMq_Username",
       "value": "guest"
     },
     {
-      "key": "RabbitMqPassword",
+      "key": "RabbitMq_Password",
       "value": "guest"
     },
     {
-      "key": "RabbitMqPublishQueue",
-      "value": "tweetstream"
+      "key": "RabbitMq_Exchange",
+      "value": "nlp_exchange"
     },
     {
-      "key": "RabbitMqSubscribeQueue",
-      "value": "corenlpresponse"
+      "key": "RabbitMq_PublishQueue",
+      "value": "nlp_response_queue"
+    },
+    {
+      "key": "RabbitMq_SubscribeQueue",
+      "value": "nlp_request_queue"
     }
   ]
 }
