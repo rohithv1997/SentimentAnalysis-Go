@@ -1,4 +1,4 @@
-package applicationConfig
+package config
 
 import (
 	"encoding/json"
@@ -9,32 +9,13 @@ import (
 	"sync"
 )
 
-type configurationManager struct {
-	keyValuePairs map[string]string
-}
-
 var once sync.Once
 
-var instance *configurationManager
+var instance *data
 
-func (configMap *configurationManager) GetValue(key string) string {
-	return configMap.keyValuePairs[key]
-}
-
-func (configMap *configurationManager) setKeyValuePair(key, value string) {
-	configMap.keyValuePairs[key] = value
-}
-
-var configJson = struct {
-	Configs []struct {
-		Key   string `json:"key"`
-		Value string `json:"value"`
-	} `json:"configs"`
-}{}
-
-func GetInstance() *configurationManager {
+func GetInstance() *data {
 	once.Do(func() {
-		instance = &configurationManager{
+		instance = &data{
 			keyValuePairs: make(map[string]string),
 		}
 
