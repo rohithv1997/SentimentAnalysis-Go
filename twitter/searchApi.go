@@ -11,7 +11,7 @@ import (
 	"syscall"
 )
 
-func ApiEndpoint(searchTerm string) {
+func SearchApi(searchTerm string) {
 	if GetTwitterConfigInstance().consumerKey == "" ||
 		GetTwitterConfigInstance().consumerSecret == "" ||
 		GetTwitterConfigInstance().accessToken == "" ||
@@ -33,12 +33,12 @@ func ApiEndpoint(searchTerm string) {
 
 	fmt.Println("Length = ", len(search.Statuses))
 
+	//serialised, _ := json.Marshal(search.Statuses[0])
+	//fmt.Printf("%s\n\n\n****\n\n\n", serialised)
+
+	// fmt.Println("Text - ", search.Statuses[0])
+
 	serialised, _ := json.Marshal(search.Statuses[0])
-	fmt.Printf("%s\n\n\n****\n\n\n", serialised)
-
-	fmt.Println("Text - ", search.Statuses[0].Text)
-
-	serialised, _ = json.Marshal(search.Metadata)
 	fmt.Printf("METADATA: \n\n\n%s\n", serialised)
 
 	// Wait for SIGINT and SIGTERM (HIT CTRL-C)

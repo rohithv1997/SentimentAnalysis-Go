@@ -34,11 +34,11 @@
     },
     {
       "key": "RabbitMq_PublishQueue",
-      "value": "nlp_response_queue"
+      "value": "nlp_request_queue"
     },
     {
       "key": "RabbitMq_SubscribeQueue",
-      "value": "nlp_request_queue"
+      "value": "nlp_response_queue"
     }
   ]
 }
