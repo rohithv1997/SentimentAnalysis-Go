@@ -1,7 +1,7 @@
 package twitter
 
 import (
-	"github.com/rohithv1997/SentimentAnalysis-Go/applicationConfig"
+	"github.com/rohithv1997/SentimentAnalysis-Go/config"
 	"sync"
 )
 
@@ -27,10 +27,10 @@ var instance *twitterConfig
 func GetTwitterConfigInstance() *twitterConfig {
 	once.Do(func() {
 		instance = &twitterConfig{
-			consumerKey:    applicationConfig.GetInstance().GetValue(ConsumerKey),
-			consumerSecret: applicationConfig.GetInstance().GetValue(ConsumerSecret),
-			accessToken:    applicationConfig.GetInstance().GetValue(AccessToken),
-			accessSecret:   applicationConfig.GetInstance().GetValue(AccessSecret),
+			consumerKey:    config.GetInstance().GetValue(ConsumerKey),
+			consumerSecret: config.GetInstance().GetValue(ConsumerSecret),
+			accessToken:    config.GetInstance().GetValue(AccessToken),
+			accessSecret:   config.GetInstance().GetValue(AccessSecret),
 		}
 	})
 	return instance

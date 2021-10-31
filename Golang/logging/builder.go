@@ -6,29 +6,29 @@ import (
 	"time"
 )
 
-type loggerBuilder struct {
+type builder struct {
 	timeFormat, module, class, method string
 }
 
-func NewLoggerBuilder() *loggerBuilder {
-	return &loggerBuilder{
+func NewBuilder() *builder {
+	return &builder{
 		timeFormat: time.RFC3339Nano,
 	}
 }
 
-func (builder *loggerBuilder) SetModule(module string) {
+func (builder *builder) SetModule(module string) {
 	builder.module = module
 }
 
-func (builder *loggerBuilder) SetClass(class string) {
+func (builder *builder) SetClass(class string) {
 	builder.class = class
 }
 
-func (builder *loggerBuilder) SetMethod(method string) {
+func (builder *builder) SetMethod(method string) {
 	builder.method = method
 }
 
-func (builder *loggerBuilder) Build() *zerolog.Event {
+func (builder *builder) Build() *zerolog.Event {
 	zerolog.TimeFieldFormat = builder.timeFormat
 	return log.Log().
 		Str(MetadataModule, builder.module).
