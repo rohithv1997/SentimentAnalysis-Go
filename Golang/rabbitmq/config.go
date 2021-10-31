@@ -18,7 +18,7 @@ type rabbitMqConfig struct {
 
 var instance *rabbitMqConfig
 
-func GetRabbitMqConfigInstance() *rabbitMqConfig {
+func getConfigInstance() *rabbitMqConfig {
 	once.Do(func() {
 		instance = &rabbitMqConfig{
 			url:            config.GetInstance().GetValue(Url),

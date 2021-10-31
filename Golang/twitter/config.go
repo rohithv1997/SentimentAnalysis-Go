@@ -5,14 +5,6 @@ import (
 	"sync"
 )
 
-const (
-	prefix         = "Twitter_"
-	ConsumerKey    = prefix + "ConsumerKey"
-	ConsumerSecret = prefix + "ConsumerSecret"
-	AccessToken    = prefix + "AccessToken"
-	AccessSecret   = prefix + "AccessSecret"
-)
-
 var once sync.Once
 
 type twitterConfig struct {
@@ -24,7 +16,7 @@ type twitterConfig struct {
 
 var instance *twitterConfig
 
-func GetTwitterConfigInstance() *twitterConfig {
+func getConfigInstance() *twitterConfig {
 	once.Do(func() {
 		instance = &twitterConfig{
 			consumerKey:    config.GetInstance().GetValue(ConsumerKey),

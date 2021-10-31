@@ -12,15 +12,15 @@ import (
 )
 
 func SearchApi(searchTerm string) {
-	if GetTwitterConfigInstance().consumerKey == "" ||
-		GetTwitterConfigInstance().consumerSecret == "" ||
-		GetTwitterConfigInstance().accessToken == "" ||
-		GetTwitterConfigInstance().accessSecret == "" {
+	if getConfigInstance().consumerKey == "" ||
+		getConfigInstance().consumerSecret == "" ||
+		getConfigInstance().accessToken == "" ||
+		getConfigInstance().accessSecret == "" {
 		log.Fatal("Consumer key/secret and Access token/secret required")
 	}
 
-	config := oauth1.NewConfig(GetTwitterConfigInstance().consumerKey, GetTwitterConfigInstance().consumerSecret)
-	token := oauth1.NewToken(GetTwitterConfigInstance().accessToken, GetTwitterConfigInstance().accessSecret)
+	config := oauth1.NewConfig(getConfigInstance().consumerKey, getConfigInstance().consumerSecret)
+	token := oauth1.NewToken(getConfigInstance().accessToken, getConfigInstance().accessSecret)
 	// OAuth1 http.Client will automatically authorize Requests
 	httpClient := config.Client(oauth1.NoContext, token)
 

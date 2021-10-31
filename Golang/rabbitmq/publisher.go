@@ -14,9 +14,9 @@ func Publish(payload models.OutgoingMessage) {
 		log.Println(err)
 	}
 	url := fmt.Sprintf(urlTemplate,
-		GetRabbitMqConfigInstance().username,
-		GetRabbitMqConfigInstance().password,
-		GetRabbitMqConfigInstance().url)
+		getConfigInstance().username,
+		getConfigInstance().password,
+		getConfigInstance().url)
 	conn, err := amqp.Dial(url)
 	if err != nil {
 		log.Println(err)
@@ -37,7 +37,7 @@ func Publish(payload models.OutgoingMessage) {
 	// with the instance and declare Queues that we can publish and
 	// subscribe to
 	q, err := ch.QueueDeclare(
-		GetRabbitMqConfigInstance().publishQueue,
+		getConfigInstance().publishQueue,
 		true,
 		false,
 		false,
@@ -54,7 +54,7 @@ func Publish(payload models.OutgoingMessage) {
 	}
 
 	err = ch.ExchangeDeclare(
-		GetRabbitMqConfigInstance().exchange,
+		getConfigInstance().exchange,
 		exchangeType,
 		true,
 		false,
@@ -68,7 +68,7 @@ func Publish(payload models.OutgoingMessage) {
 
 	// attempt to publish a message to the queue!
 	err = ch.Publish(
-		GetRabbitMqConfigInstance().exchange,
+		getConfigInstance().exchange,
 		"",
 		false,
 		false,
