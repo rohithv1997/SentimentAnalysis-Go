@@ -10,7 +10,7 @@ import (
 	"syscall"
 )
 
-func StreamApi(searchTerm string) {
+func StreamApi(searchTerm string, successAction func(string)) {
 	if GetTwitterConfigInstance().consumerKey == "" ||
 		GetTwitterConfigInstance().consumerSecret == "" ||
 		GetTwitterConfigInstance().accessToken == "" ||
@@ -39,6 +39,7 @@ func StreamApi(searchTerm string) {
 	demux := twitter.NewSwitchDemux()
 	demux.Tweet = func(tweet *twitter.Tweet) {
 		fmt.Printf(tweet.Text)
+		successAction(tweet.Text)
 		//serialised, _ := json.Marshal(tweet.Text)
 		//fmt.Printf("%s\n\n\n****\n\n\n", serialised)
 	}

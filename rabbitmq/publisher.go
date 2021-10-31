@@ -1,12 +1,18 @@
 package rabbitmq
 
 import (
+	"encoding/json"
 	"fmt"
+	"github.com/rohithv1997/SentimentAnalysis-Go/models"
 	"github.com/streadway/amqp"
 	"log"
 )
 
-func Publish(message []byte) {
+func Publish(payload models.OutgoingMessage) {
+	message, err := json.Marshal(payload)
+	if err != nil {
+		log.Println(err)
+	}
 	url := fmt.Sprintf(urlTemplate,
 		GetRabbitMqConfigInstance().username,
 		GetRabbitMqConfigInstance().password,
