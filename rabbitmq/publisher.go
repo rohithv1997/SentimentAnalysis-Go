@@ -19,12 +19,12 @@ func Publish(payload models.OutgoingMessage) {
 		GetRabbitMqConfigInstance().url)
 	conn, err := amqp.Dial(url)
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
 	}
 
 	ch, err := conn.Channel()
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
 	}
 	defer func(ch *amqp.Channel) {
 		err := ch.Close()
@@ -50,7 +50,20 @@ func Publish(payload models.OutgoingMessage) {
 	fmt.Println(q)
 	// Handle any errors if we were unable to create the queue
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
+	}
+
+	err = ch.ExchangeDeclare(
+		GetRabbitMqConfigInstance().exchange,
+		exchangeType,
+		true,
+		false,
+		false,
+		false,
+		nil)
+	if err != nil {
+		log.Println(err)
+		return
 	}
 
 	// attempt to publish a message to the queue!
