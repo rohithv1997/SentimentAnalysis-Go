@@ -29,8 +29,12 @@
       "value": "guest"
     },
     {
-      "key": "RabbitMq_Exchange",
-      "value": "nlp_exchange"
+      "key": "RabbitMq_PublishExchange",
+      "value": "nlp_request_exchange"
+    },
+    {
+      "key": "RabbitMq_SubscribeExchange",
+      "value": "nlp_response_exchange"
     },
     {
       "key": "RabbitMq_PublishQueue",

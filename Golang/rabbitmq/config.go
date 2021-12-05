@@ -24,7 +24,7 @@ func getConfigInstance() *rabbitMqConfig {
 			url:            config.GetInstance().GetValue(Url),
 			username:       config.GetInstance().GetValue(Username),
 			password:       config.GetInstance().GetValue(Password),
-			exchange:       config.GetInstance().GetValue(Exchange),
+			exchange:       config.GetInstance().GetValue(PublishExchange),
 			publishQueue:   config.GetInstance().GetValue(PublishQueue),
 			subscribeQueue: config.GetInstance().GetValue(SubscribeQueue),
 		}
